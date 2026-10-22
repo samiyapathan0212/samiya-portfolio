@@ -1,0 +1,216 @@
+@import 'tailwindcss';
+
+/* Dark mode is driven by data-theme on <html>, set before first paint by the inline script in index.html. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ---------- Design tokens (single source of truth for both themes) ---------- */
+:root {
+  color-scheme: light;
+  --bg: #f3efe6;
+  --surface: #faf8f2;
+  --surface-2: #eae5da;
+  --text: #111111;
+  --muted: #625e57;
+  --border: #d9d2c6;
+  --border-strong: #92887a;
+  --accent: #e8431f;
+  --accent-hover: #c93416;
+  --accent-contrast: #fffaf3;
+  --accent-soft: #f8dfd6;
+  --ok: #15803d;
+  --shadow: 0 1px 2px rgb(9 9 11 / 0.04), 0 12px 32px -16px rgb(9 9 11 / 0.16);
+  --header-h: 4rem;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0b0b0c;
+  --surface: #141414;
+  --surface-2: #1d1c1b;
+  --text: #ece9e1;
+  --muted: #aaa59b;
+  --border: #302e2a;
+  --border-strong: #716b60;
+  --accent: #ff6a45;
+  --accent-hover: #ff8a6d;
+  --accent-contrast: #0b0b0c;
+  --accent-soft: #321c16;
+  --ok: #4ade80;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -20px rgb(0 0 0 / 0.8);
+}
+
+/* Map tokens to Tailwind utilities: bg-bg, bg-surface, text-ink, text-muted, border-line, bg-accent ... */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-ink: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+
+  --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Fira Code', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --shadow-card: var(--shadow);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  button,
+  [role='button'],
+  summary {
+    cursor: pointer;
+  }
+}
+
+
+/* "Stage": an always-dark band (same tokens as the dark theme) so project screenshots sit on a dark ground in both themes. */
+.stage {
+  color-scheme: dark;
+  --bg: #080808;
+  --surface: #121211;
+  --surface-2: #1b1a18;
+  --text: #ece9e1;
+  --muted: #aaa59b;
+  --border: #302e2a;
+  --border-strong: #716b60;
+  --accent: #ff6a45;
+  --accent-hover: #ff8a6d;
+  --accent-contrast: #0b0b0c;
+  --accent-soft: #321c16;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 24px 60px -24px rgb(0 0 0 / 0.9);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Fine-pointer illumination on the dark work stage. The spotlight is decorative and never captures input. */
+.spotlight-zone {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight-zone::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  opacity: var(--spotlight-opacity, 0);
+  transition: opacity 260ms ease;
+  background: radial-gradient(460px circle at var(--spotlight-x, 50%) var(--spotlight-y, 25%), rgb(255 106 69 / 0.13), transparent 72%);
+}
+
+.spotlight-zone > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Outlined display numerals (decorative, aria-hidden where used). */
+.outline-num {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--border-strong);
+}
+
+/* Hairline that draws in once when it enters view; static for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .hover-lift { transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.2s; }
+  .group:hover .hover-lift, .group:focus-visible .hover-lift { transform: translateY(-4px); }
+  .certificate-tile img { transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .certificate-tile:hover img, .certificate-tile:focus-visible img { transform: scale(1.035); }
+  .arrow-nudge { transition: transform 220ms ease; }
+  a:hover .arrow-nudge, a:focus-visible .arrow-nudge, button:hover .arrow-nudge, button:focus-visible .arrow-nudge { transform: translateX(4px); }
+}
+
+@utility container-x {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 75rem;
+  padding-inline: 1rem;
+  @media (min-width: 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Subtle, short colour transition applied only while the theme is being toggled (never on load). */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease,
+    fill 220ms ease,
+    stroke 220ms ease !important;
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.72);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog[open] { animation: dialog-in 240ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  @keyframes dialog-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .spotlight-zone::before { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Samiya Pathan — Data &amp; Software Engineering</title>
+    <meta
+      name="description"
+      content="Portfolio of Samiya Pathan: demand forecasting, data analytics and full-stack software projects, with case studies, internships and certificates."
+    />
+    <meta name="author" content="Samiya Pathan" />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph / social preview. Set VITE_SITE_URL (see .env.example) after deploying so these become absolute URLs. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Samiya Pathan" />
+    <meta property="og:title" content="Samiya Pathan — Data &amp; Software Engineering" />
+    <meta
+      property="og:description"
+      content="Demand forecasting, data analytics and full-stack projects, with honest case studies."
+    />
+    <meta property="og:image" content="%VITE_SITE_URL%/og-image.png" />
+    <meta property="og:image:alt" content="Samiya Pathan — Data & Software Engineering portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Samiya Pathan — Data &amp; Software Engineering" />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/og-image.png" />
+
+    <!-- Apply the saved (or OS) theme before first paint so there is no flash of the wrong theme. -->
+    <script>
+      (function () {
+        var theme = 'light'
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'light' || stored === 'dark') {
+            theme = stored
+          } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            theme = 'dark'
+          }
+        } catch (e) {
+          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark'
+        }
+        document.documentElement.dataset.theme = theme
+        document.documentElement.style.colorScheme = theme
+      })()
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap"
+    />
+  </head>
+  <body>
+    <noscript>This portfolio needs JavaScript. My resume is available at /Samiya_Pathan_Resume.pdf.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
